@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
     def shared_user
       if @current_user.role == 'shared'
-        redirect_to root_path
+        redirect_to root_path, :notice => "Unautherised Access!!"
       end
     end
 end

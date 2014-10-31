@@ -1,14 +1,44 @@
 <p id="notice"><%= notice %></p>
+<h1>Blog : <%= @post.title %></h1>
 
-<p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
-
-<p>
-  <strong>Body:</strong>
-  <%= @post.body %>
-</p>
+<div style="width:700px; margin:20px;">
+  <table class="table table-striped table-bordered">
+    <tr>
+      <td width="150">
+        <strong>Title:</strong>
+      </td>
+      <td>
+        <%= @post.title %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Body:</strong>
+      </td>
+      <td>
+        <%= @post.body %>
+      </td>
+    </tr>
+    <% if @post.password || @post.password  %>
+      <tr>
+        <td>
+          <strong>Password:</strong>
+        </td>
+        <td>
+          <%= @post.password %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Users:</strong>
+        </td>
+        <td>
+          <%= @post.users %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>

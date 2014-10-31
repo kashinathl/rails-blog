@@ -16,6 +16,11 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    if current_user.role == 'shared'
+      if @post.users
+        redirect_to root_path, :notice => "Unautherised Access!!" unless @post.users.split(',').include? current_user
+      end
+    end
   end
 
   # GET /posts/new

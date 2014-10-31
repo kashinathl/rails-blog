@@ -11,3 +11,22 @@
  *= require_self
  *= require_tree .
  */
+
+@import "twitter/bootstrap-no-sprites";
+
+body{
+  margin: 20px;
+}
+
+a{
+  color: blue !important;
+}
+
+#user_nav{
+  float: right;
+}
+
+#flash_notice, #flash_alert{
+  color: red;
+}
+
