@@ -17,8 +17,8 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     if current_user.role == 'shared'
-      if @post.users
-        redirect_to root_path, :notice => "Unautherised Access!!" unless @post.users.split(',').include? current_user
+      if @post.shared_post.try(:users)
+        redirect_to root_path, :notice => "Unautherised Access!!" unless @post.shared_post.try(:users).split(',').include? current_user
       end
     end
   end
@@ -38,15 +38,12 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
 
     respond_to do |format|
-      Post.transaction do
-        if @post.save
-          create_shared_users(post_params)
-          format.html { redirect_to @post, notice: 'Post was successfully created.' }
-          format.json { render action: 'show', status: :created, location: @post }
-        else
-          format.html { render action: 'new' }
-          format.json { render json: @post.errors, status: :unprocessable_entity }
-        end
+      if @post.save
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @post }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -84,14 +81,5 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :body, :password, :users)
-    end
-
-    def create_shared_users(post_params)
-      users = post_params[:users]
-
-      users.split(',').each do |user|
-        shared_user = User.new(email: user.strip, password: post_params[:password], role: 'shared')
-        shared_user.save
-      end
     end
 end
